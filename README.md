@@ -1,6 +1,6 @@
 # "Better OZ ERC721"
 
-ERC721OZOptimized adds ERC721A-style data hitchiking on to OpenZeppelin's ERC721 implementation.
+ERC721OZOptimized adds ERC721A-style data hitchhiking on to OpenZeppelin's ERC721 implementation.
 
 ERC721OZOptimized limits token ids to uint64s (down from uint256s). Other than that, ERC721OZOptimized is functionally equivalent to OZ's implementation, but contains new functions to:
 
