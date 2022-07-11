@@ -26,8 +26,8 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
     // Token symbol
     string private _symbol;
     
-    struct TokenOwnership {
-        address addr;
+    struct TokenData {
+        address owner;
         uint96 extraData;
     }
 
@@ -38,7 +38,7 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
         uint64 extraData;
     }
 
-    mapping(uint256 => TokenOwnership) internal _ownerships;
+    mapping(uint256 => TokenData) internal _tokenData;
 
     mapping(address => AddressData) private _addressData;
 
@@ -78,7 +78,7 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
      * @dev See {IERC721-ownerOf}.
      */
     function ownerOf(uint256 tokenId) public view virtual override returns (address) {
-        address owner = _ownerships[tokenId].addr;
+        address owner = _tokenData[tokenId].owner;
         require(owner != address(0), "ERC721: invalid token ID");
         return owner;
     }
@@ -229,7 +229,7 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
      * and stop existing when they are burned (`_burn`).
      */
     function _exists(uint256 tokenId) internal view virtual returns (bool) {
-        return _ownerships[tokenId].addr != address(0);
+        return _tokenData[tokenId].owner != address(0);
     }
 
     /**
@@ -296,8 +296,8 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
         addressData.balance += 1;
         addressData.numberMinted += 1;
         
-        TokenOwnership storage ownership = _ownerships[tokenId];
-        ownership.addr = to;
+        TokenData storage tokenData = _tokenData[tokenId];
+        tokenData.owner = to;
 
         emit Transfer(address(0), to, tokenId);
 
@@ -326,7 +326,7 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
         addressData.balance -= 1;
         addressData.numberBurned += 1;
         
-        delete _ownerships[tokenId];
+        delete _tokenData[tokenId];
 
         emit Transfer(owner, address(0), tokenId);
 
@@ -363,8 +363,8 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
         AddressData storage toAddressData = _addressData[to];
         toAddressData.balance += 1;
         
-        TokenOwnership storage ownership = _ownerships[tokenId];
-        ownership.addr = to;
+        TokenData storage tokenData = _tokenData[tokenId];
+        tokenData.owner = to;
 
         emit Transfer(from, to, tokenId);
 
@@ -406,12 +406,12 @@ contract ERC721OZOptimized is Context, ERC165, IERC721, IERC721Metadata {
     }
     
     function _setTokenExtraData(uint tokenId, uint96 extraData) internal {
-        TokenOwnership storage tokenOwnership = _ownerships[tokenId];
-        tokenOwnership.extraData = extraData;
+        TokenData storage tokenData = _tokenData[tokenId];
+        tokenData.extraData = extraData;
     }
     
     function _getTokenExtraData(uint tokenId) internal view returns (uint96) {
-        return _ownerships[tokenId].extraData;
+        return _tokenData[tokenId].extraData;
     }
     
     function _numberMinted(address owner) internal view returns (uint256) {
