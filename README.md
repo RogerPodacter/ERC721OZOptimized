@@ -22,3 +22,7 @@ ERC721OZOptimized limits token ids to uint64s (down from uint256s). Other than t
 ## This is a proof of concept!
 
 Other things you could do: add `unchecked` in various places. Add callbacks to set user / address data to save gas on double writes (like ERC721A). Test performance.
+
+## There is also a version with Diamond Storage (ERC721D)
+
+It doesn't implement `supportsInterface`, you must do that yourself in another facet
