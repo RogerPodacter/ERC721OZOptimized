@@ -1,3 +1,7 @@
+# This is deprecated
+
+Just use https://github.com/Vectorized/solady/blob/main/src/tokens/ERC721.sol
+
 # "Better OZ ERC721"
 
 ERC721OZOptimized adds ERC721A-style data hitchhiking on to OpenZeppelin's ERC721 implementation.
